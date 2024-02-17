@@ -1,0 +1,11 @@
+# ignore env viles
+*.env
+
+# ignore .env.example
+!.env.example
+
+# ignore virtual environment
+.venv/
+
+# ignore vscode settings
+.vscode/

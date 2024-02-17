@@ -1,0 +1,19 @@
+version: '3.8'
+
+# create a network for the services to communicate
+networks:
+  ambient:
+
+services:
+  app:
+    image: ambient-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    networks:
+      - ambient
+    ports:
+      - "8000:8000"
+    command: ["python", "main.py"]

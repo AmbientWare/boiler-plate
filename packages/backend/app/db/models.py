@@ -1,15 +1,22 @@
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from datetime import datetime
+
 
 from .session import Base
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy import JSON
 
-
-class User(Base):
-    __tablename__ = "user"
+class BaseTable(Base):
+    __abstract__ = True
 
     id = Column(Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.now(datetime.UTC))
+    updated_at = Column(DateTime, default=datetime.now(datetime.UTC), onupdate=datetime.now(datetime.UTC))
+
+
+class User(BaseTable):
+    __tablename__ = "user"
+
     email = Column(String, unique=True, index=True, nullable=False)
     name = Column(String)
     role = Column(String, default="user")
@@ -23,20 +30,18 @@ class User(Base):
     subscriptions = relationship("Subscription", back_populates="user")
 
 
-class Token(Base):
+class Token(BaseTable):
     __tablename__ = "api_key"
 
-    id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id"), index=True, nullable=False)
     hashed_token = Column(String, nullable=False)
 
     user = relationship("User", back_populates="tokens")
 
 
-class Subscription(Base):
+class Subscription(BaseTable):
     __tablename__ = "subscription"
 
-    id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id"), index=True, nullable=False)
     subscription_email = Column(String, nullable=False)
     customer_id = Column(String, nullable=False)
@@ -51,10 +56,9 @@ class Subscription(Base):
     user = relationship("User", back_populates="subscriptions")
 
 
-class Team(Base):
+class Team(BaseTable):
     __tablename__ = "team"
 
-    id = Column(Integer, primary_key=True, index=True)
     creator_id = Column(Integer, ForeignKey("user.id"), index=True, nullable=False)
     name = Column(String, index=True, nullable=False)
     description = Column(String, nullable=True)
@@ -63,10 +67,9 @@ class Team(Base):
     members = relationship("TeamMember", back_populates="team")
 
 
-class TeamMember(Base):
+class TeamMember(BaseTable):
     __tablename__ = "team_member"
 
-    id = Column(Integer, primary_key=True, index=True)
     team_id = Column(Integer, ForeignKey("team.id"), index=True, nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"), index=True, nullable=False)
 

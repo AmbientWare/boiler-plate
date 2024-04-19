@@ -3,3 +3,5 @@
 
 # ignore all .venv files
 *.venv
+
+.python-version

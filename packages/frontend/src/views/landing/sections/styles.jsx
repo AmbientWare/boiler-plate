@@ -9,9 +9,13 @@ export const LandingStyles = {
     borderRadius: "20%",
   },
   contentContainer: {
+    display: "flex",
+    flexDirection: "column",
     position: "relative",
     zIndex: 1, // Ensures content is above the pixel grid
     pointerEvents: "none",
+    justifyContent: "center",
+    alignItems: "center",
   },
   interactiveElement: {
     pointerEvents: "auto", // Ensures interactive elements can be clicked

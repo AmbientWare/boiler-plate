@@ -1,5 +1,5 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime
-from datetime import datetime
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, ARRAY
+from datetime import datetime, UTC
 
 
 from .session import Base
@@ -10,8 +10,8 @@ class BaseTable(Base):
     __abstract__ = True
 
     id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, default=datetime.now(datetime.UTC))
-    updated_at = Column(DateTime, default=datetime.now(datetime.UTC), onupdate=datetime.now(datetime.UTC))
+    created_at = Column(DateTime, default=datetime.now(UTC))
+    updated_at = Column(DateTime, default=datetime.now(UTC), onupdate=datetime.now(UTC))
 
 
 class User(BaseTable):
@@ -75,3 +75,13 @@ class TeamMember(BaseTable):
 
     team = relationship("Team", back_populates="members")
     user = relationship("User", back_populates="memberships")
+
+
+class TopsPickerData(BaseTable):
+    __tablename__ = "tops_picker_data"
+
+    user_id = Column(Integer, ForeignKey("user.id"), index=True, nullable=False)
+    reference_data_paths = Column(ARRAY(String), nullable=False)
+    results_path = Column(String, nullable=True)
+
+    user = relationship("User", back_populates="tops_picker_data")

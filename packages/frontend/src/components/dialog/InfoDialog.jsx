@@ -14,17 +14,17 @@ import { StyledButton } from "@components/button/StyledButton";
 function InfoDialog({ isOpen, onClose }) {
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle variant="h1">Help Make AmbientWare Better</DialogTitle>
+      <DialogTitle variant="h1">Help Make HXMX Better</DialogTitle>
       <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
         <DialogContentText variant="h2">
-          AmbientWare software is currently undergoing Beta testing! Please give
+          HXMX software is currently undergoing Beta testing! Please give
           use feedback about improvements and bugs! Please email us at{" "}
           <Link
-            href="mailto:info@ambientware.co"
+            href="mailto:info@hxmx.co"
             target="_blank"
             rel="noopener noreferrer"
           >
-            info@ambientware.co
+            info@hxmx.co
           </Link>
         </DialogContentText>
       </DialogContent>

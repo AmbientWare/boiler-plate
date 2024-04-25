@@ -2,18 +2,18 @@
 $paper: #ffffff;
 
 // primary
-$primaryLight: #f6f6f6;
-$primaryMain: #689fd6;
-$primaryDark: #1e88e5;
-$primary200: #90caf9;
-$primary800: #1565c0;
+$primaryLight: #9dbcc6;  // Lighter shade of #286982
+$primaryMain: #286982;   // Main company logo color
+$primaryDark: #1b4d5c;   // Darker shade of #286982
+$primary200: #70a2ae;    // Slightly lighter than main
+$primary800: #13403e;    // Much darker shade of #286982
 
 // secondary
-$secondaryLight: #e0f5fc; // Light bluish-teal
-$secondaryMain: #67c1da; // Main bluish-teal
-$secondaryDark: #689fd6; // Darker bluish-teal
-$secondary200: #a8d6e5; // Slightly muted bluish-teal
-$secondary800: #00475a; // Deep bluish-teal
+$secondaryLight: #ffffff; // Pure white from logo
+$secondaryMain: #9a9a9a;  // Medium grey
+$secondaryDark: #646464;  // Darker grey
+$secondary200: #cfcfcf;   // Light grey
+$secondary800: #3f3f3f;   // Dark grey from logo
 
 // success Colors
 $successLight: #cdf5d8;

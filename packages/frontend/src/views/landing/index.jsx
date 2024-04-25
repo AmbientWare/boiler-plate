@@ -86,7 +86,7 @@ const LandingPage = () => {
               Privacy Policy
             </Link>
             <div style={{ display: "inline-block", width: "100px" }} />
-            <Link color="textSecondary" href="mailto:info@ambientware.co">
+            <Link color="textSecondary" href="mailto:info@hxmx.co">
               Contact Us
             </Link>
           </Box>

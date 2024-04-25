@@ -1,4 +1,4 @@
-# ambient-app
+# hxmx-app
 
 ## Description
 This repository contains a full-stack web application with a Python FastAPI backend and a Vite app with React frontend. The backend is located in the `packages/backend` directory, while the frontend is located in the `packages/frontend` directory.

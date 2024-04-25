@@ -63,7 +63,7 @@ async def login(
         )
 
     add_user_to_session(request, user)
-    return {"success": True, "redirect_url": "/home"}
+    return {"success": True, "redirect_url": "/app/dashboard"}
 
 
 @r.get("/logout")
@@ -115,7 +115,7 @@ async def auth(request: Request, db=Depends(get_db)):
         add_user_to_session(request, current_user)
 
     # redirect to the /home page
-    return RedirectResponse(url=f"{DEPLOYED_URL}/home")
+    return RedirectResponse(url=f"{DEPLOYED_URL}/app/dashboard")
 
 
 @r.get("/auth/check")

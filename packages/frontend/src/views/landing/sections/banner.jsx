@@ -29,17 +29,29 @@ export default function Banner({ onInquire }) {
         <Box sx={LandingStyles.contentContainer}>
           <SectionHeader
             isWhite={true}
-            title="Your Gateway to Intelligent Applications"
+            title="Accelerated log correlation for enhanced productivity"
           />
           <Typography
             sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignText: "center",
               pb: "50px",
               fontSize: "24px",
               color: "white",
               textAlign: "center",
+              width: "80%",
             }}
           >
-            Rapidly build and instantly deploy AI solutions.
+            The HXMX Log Correlation Assistant, powered by statistical feature
+            analysis, transforms well log correlation. Music recognition apps
+            like Shazam identify songs from brief snippets. In a similar
+            fashion, HXMX matches hashes in a database to swiftly pick and
+            verify tops on well logs in a matter of seconds. This breakthrough
+            not only reduces picking time, but also delivers objective
+            definitions of tops, identifies missing sections, and offers
+            comparative metrics between wells. HXMX Tops Fingerprinting enhances
+            the efficiency, accuracy, and depth of geological analysis.
           </Typography>
           <Box
             sx={{

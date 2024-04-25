@@ -212,7 +212,7 @@ const ProfileSection = ({ username, handleLogout }) => {
                           <ListItemText
                             primary={
                               <Typography variant="body2">
-                                About AmbientWare
+                                About HXMX
                               </Typography>
                             }
                           />

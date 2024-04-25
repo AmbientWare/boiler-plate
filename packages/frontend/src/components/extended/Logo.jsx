@@ -1,5 +1,5 @@
-import logoWhite from "@assets/images/ambientware_white.png";
-import logoBlack from "@assets/images/ambientware_black.png";
+import logoWhite from "@assets/images/hxmx_logo.png";
+import logoBlack from "@assets/images/hxmx_logo.png";
 
 import { useSelector } from "react-redux";
 
@@ -13,9 +13,9 @@ const Logo = () => {
       style={{ alignItems: "center", display: "flex", flexDirection: "row" }}
     >
       <img
-        style={{ objectFit: "contain", height: "auto", width: 150 }}
+        style={{ objectFit: "contain", height: "50px", width: 150 }}
         src={customization.isDarkMode ? logoWhite : logoBlack}
-        alt="AmbientWare"
+        alt="HXMX"
       />
     </div>
   );

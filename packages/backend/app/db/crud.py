@@ -14,7 +14,7 @@ def init_admin(
     super_user = schemas.UserCreate(
         name="Super User",
         email="z@z.com",
-        password="ambient",
+        password="hxmx",
         role=schemas.Roles.ADMIN,
         is_confirmed=True,
     )

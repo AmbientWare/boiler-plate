@@ -13,7 +13,7 @@ FRONTEND_BUILD_DIR = "../frontend/dist/"
 
 class APISettingsProd(BaseSettings):
     DEPLOYED_URL: str = os.getenv("DEPLOYED_URL", "http://localhost:8000")
-    PROJECT_NAME: str = "ambient"
+    PROJECT_NAME: str = "hxmx"
     SQLALCHEMY_DATABASE_URI: str = os.getenv("DATABASE_URL", "sqlite:///./app.db")
     DOCS_URL: str = "/api/docs"
     API_V1_STR: str = "/api/v1"
@@ -28,7 +28,7 @@ class APISettingsProd(BaseSettings):
     STRIPE_DEFAULT_PRODUCT_NAME: str = os.getenv("STRIPE_DEFAULT_PRODUCT_NAME", "Free")
 
     LOGGING_CONFIG: dict = {
-        "path": "/tmp/ambient/logs",
+        "path": "/tmp/hxmx/logs",
         "filename": "access.log",
         "level": os.getenv("LOG_LEVEL", "info"),
         "rotation": "2 days",
@@ -44,7 +44,7 @@ class APISettingsDevel(APISettingsProd):
     RELAOD: bool = True
 
     LOGGING_CONFIG: dict = {
-        "path": "/tmp/ambient/logs",
+        "path": "/tmp/hxmx/logs",
         "filename": "access.log",
         "level": "info",
         "rotation": "1 days",

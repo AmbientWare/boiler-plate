@@ -2,18 +2,18 @@ version: '3.8'
 
 # create a network for the services to communicate
 networks:
-  ambient:
+  hxmx:
 
 services:
   app:
-    image: ambient-app:latest
+    image: hxmx-app:latest
     build:
       context: .
       dockerfile: Dockerfile
     env_file:
       - .env
     networks:
-      - ambient
+      - hxmx
     ports:
       - "8000:8000"
     command: ["python", "main.py"]

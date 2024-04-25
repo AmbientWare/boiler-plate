@@ -8,5 +8,5 @@ export const baseURL =
     ? window.location.origin
     : window.location.origin.replace(":5173", ":8000");
 export const uiBaseURL = window.location.origin;
-export const scheduleLink = "https://calendly.com/ambientware/30min";
+export const scheduleLink = "https://calendly.com/hxmx/30min";
 export const FLOWISE_CREDENTIAL_ID = "FLOWISE_CREDENTIAL_ID";

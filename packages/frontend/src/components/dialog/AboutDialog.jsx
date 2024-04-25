@@ -35,7 +35,7 @@ const AboutDialog = ({ show, onCancel }) => {
         };
       }
       const latestReleaseReq = axios.get(
-        "https://github.com/AmbientWare/ambient/releases/latest",
+        "https://github.com/hxmx/hxmx/releases/latest",
       );
       const currentVersionReq = axios.get(`${baseURL}/api/v1/version`, {
         ...config,
@@ -65,7 +65,7 @@ const AboutDialog = ({ show, onCancel }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle sx={{ fontSize: "1rem" }} id="alert-dialog-title">
-        Ambient Version
+        HXMX Version
       </DialogTitle>
       <DialogContent>
         {data && (

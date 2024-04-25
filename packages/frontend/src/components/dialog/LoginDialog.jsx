@@ -123,7 +123,7 @@ const LoginDialog = ({ show, onClose, dialogProps }) => {
         {useAccessCode && (
           <div>
             <Typography>
-              AmbientWare is undergoing beta testing. Please reach out for
+              HXMX is undergoing beta testing. Please reach out for
               access!
             </Typography>
             <div style={{ marginTop: 20 }}></div>

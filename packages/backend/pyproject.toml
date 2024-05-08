@@ -21,6 +21,8 @@ python-multipart = "^0.0.9"
 itsdangerous = "^2.1.2"
 stripe = "^8.2.0"
 psycopg2-binary = "^2.9.9"
+celery = "^5.4.0"
+redis = "^5.0.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

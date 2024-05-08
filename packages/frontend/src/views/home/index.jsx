@@ -52,7 +52,7 @@ const Home = () => {
   const [componentCredential, setComponentCredential] = useState({});
 
   useEffect(() => {
-    if (getUserCredentialApi.data) {
+    if (getUserCredentialApi.data?.length > 0) {
       const cred = getUserCredentialApi.data[0];
       setCredential(cred);
       if (cred.name) {

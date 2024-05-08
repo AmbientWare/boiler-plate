@@ -16,6 +16,7 @@ class APISettingsProd(BaseSettings):
     PROJECT_NAME: str = "boilerplate"
     ENCRYPTION_KEY: str = os.getenv("ENCRYPTION_KEY", "0123456789")
     SQLALCHEMY_DATABASE_URI: str = os.getenv("DATABASE_URL", "sqlite:///./app.db")
+    REDIS_BROKER_URL: str = os.getenv("REDIS_BROKER_URL", "redis://redis:6379/0")
     DOCS_URL: str = "/api/docs"
     API_V1_STR: str = "/api/v1"
     OPENAPI_ROUTE: str = "/api/"

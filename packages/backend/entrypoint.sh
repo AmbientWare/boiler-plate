@@ -7,7 +7,6 @@ graceful_shutdown() {
     # kill FastAPI application
     echo "Shutting down the Application..."
     kill $FASTAPI_PID
-    wait $FASTAPI_PID
 }
 
 # Trap SIGTERM

@@ -7,12 +7,13 @@ export const PixelGrid = () => {
   const theme = useTheme();
 
   const pixelGridRef = useRef(null);
+  const [numberOfPixels, setNumberOfPixels] = useState(0);
   const [gridDimensions, setGridDimensions] = useState({ width: 0, height: 0 });
   const pixelSize = 20;
   const [hoveredPixels, setHoveredPixels] = useState({});
 
   const generateRandomColor = () => {
-    const hue = Math.floor(Math.random() * (220 - 180 + 1)) + 180;
+    const hue = Math.floor(Math.random() * (40 - 25 + 1)) + 25;
     const saturation = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
     const lightness = Math.floor(Math.random() * (70 - 30 + 1)) + 30;
 
@@ -46,21 +47,21 @@ export const PixelGrid = () => {
     calculateGridDimensions();
 
     window.addEventListener("resize", calculateGridDimensions);
-
-    return () => {
-      window.removeEventListener("resize", calculateGridDimensions);
-    };
   }, []);
 
-  const numberOfPixels =
-    Math.floor(gridDimensions.width / pixelSize) *
-    Math.floor(gridDimensions.height / pixelSize);
+  useEffect(() => {
+    const numPixels =
+      Math.floor(gridDimensions.width / pixelSize) *
+      Math.floor(gridDimensions.height / pixelSize);
+    setNumberOfPixels(numPixels);
+  }, [gridDimensions, pixelSize, pixelGridRef]);
 
   return (
     <Box
+      display={"flex"}
       ref={pixelGridRef}
       className="pixelGrid"
-      sx={{ backgroundColor: theme.palette.grey[900] }}
+      sx={{ backgroundColor: theme.palette.paper, height: "100vh"}}
     >
       {Array.from({ length: numberOfPixels }, (_, id) => (
         <Box

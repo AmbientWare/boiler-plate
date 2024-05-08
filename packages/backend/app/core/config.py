@@ -7,13 +7,14 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
-CONF_TYPE = os.getenv("CONF_TYPE", "prod")
+ENV_NAME = os.getenv("ENV_NAME", "prod")
 FRONTEND_BUILD_DIR = "../frontend/dist/"
 
 
 class APISettingsProd(BaseSettings):
     DEPLOYED_URL: str = os.getenv("DEPLOYED_URL", "http://localhost:8000")
-    PROJECT_NAME: str = "ambient"
+    PROJECT_NAME: str = "boilerplate"
+    ENCRYPTION_KEY: str = os.getenv("ENCRYPTION_KEY", "0123456789")
     SQLALCHEMY_DATABASE_URI: str = os.getenv("DATABASE_URL", "sqlite:///./app.db")
     DOCS_URL: str = "/api/docs"
     API_V1_STR: str = "/api/v1"
@@ -21,14 +22,14 @@ class APISettingsProd(BaseSettings):
     DEBUG: bool = False
     DEBUG_EXCEPTIONS: bool = False
     RELAOD: bool = False
-    ENV_NAME: str = CONF_TYPE
+    ENV_NAME: str = ENV_NAME
     STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
     STRIPE_PUBLISHABLE_KEY: str = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
     STRIPE_WEBHOOK_KEY: str = os.getenv("STRIPE_WEBHOOK_KEY", "")
     STRIPE_DEFAULT_PRODUCT_NAME: str = os.getenv("STRIPE_DEFAULT_PRODUCT_NAME", "Free")
 
     LOGGING_CONFIG: dict = {
-        "path": "/tmp/ambient/logs",
+        "path": "/tmp/app/logs",
         "filename": "access.log",
         "level": os.getenv("LOG_LEVEL", "info"),
         "rotation": "2 days",
@@ -44,7 +45,7 @@ class APISettingsDevel(APISettingsProd):
     RELAOD: bool = True
 
     LOGGING_CONFIG: dict = {
-        "path": "/tmp/ambient/logs",
+        "path": "/tmp/app/logs",
         "filename": "access.log",
         "level": "info",
         "rotation": "1 days",
@@ -59,11 +60,11 @@ class APISettingsTest(APISettingsProd):
 
 @lru_cache()
 def get_app_settings() -> APISettingsProd:
-    if CONF_TYPE == "prod" or CONF_TYPE == None:
+    if ENV_NAME == "prod" or ENV_NAME == None:
         return APISettingsProd()  # reads variables from environment
-    elif CONF_TYPE == "dev":
+    elif ENV_NAME == "dev":
         return APISettingsDevel()
-    elif CONF_TYPE == "test":
+    elif ENV_NAME == "test":
         return APISettingsTest()
     else:
-        raise ValueError("Invalid configuration name: " + CONF_TYPE)
+        raise ValueError("Invalid configuration name: " + ENV_NAME)

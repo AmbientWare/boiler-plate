@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Dialog,
@@ -18,7 +18,12 @@ import { StyledButton } from "@components/button/StyledButton";
 import { Input } from "@components/input/Input";
 import GoogleImage from "@assets/images/google-assets/light/web_light_sq_ctn@2x.png";
 
-const LoginDialog = ({ show, onClose, dialogProps }) => {
+const LoginDialog = ({
+  show,
+  onClose,
+  dialogProps,
+  showSignUpDialog = false,
+}) => {
   const navigate = useNavigate();
   const showGoogleLogin = true; // set to true to show Google login button
   const useAccessCode = false; // set to true to require access code
@@ -48,7 +53,7 @@ const LoginDialog = ({ show, onClose, dialogProps }) => {
   const [nameVal, setNameVal] = useState("");
   const [emailVal, setEmailVal] = useState("");
   const [passwordVal, setPasswordVal] = useState("");
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(showSignUpDialog);
   const [signUpMessage, setSignUpMessage] = useState("");
   const [showSignUpMessage, setShowSignUpMessage] = useState(false);
 
@@ -66,7 +71,6 @@ const LoginDialog = ({ show, onClose, dialogProps }) => {
 
     api(userInfo)
       .then((response) => {
-        console.log(response.status, response.data.redirect_url);
         if (response.status === 200) {
           // Handle successful login
           navigate(response.data.redirect_url);
@@ -87,7 +91,7 @@ const LoginDialog = ({ show, onClose, dialogProps }) => {
           // Handle other types of errors
           console.error(
             "Login error:",
-            error.response ? error.response.data.detail : error.message,
+            error.response ? error.response.data.detail : error.message
           );
         }
       });
@@ -96,6 +100,12 @@ const LoginDialog = ({ show, onClose, dialogProps }) => {
   const onGoogleLogin = async () => {
     window.location.href = `${baseURL}/api/v1/login/google`;
   };
+
+  useEffect(() => {
+    if (show) {
+      setShowSignUp(showSignUpDialog);
+    }
+  }, [show, showSignUpDialog]);
 
   const component = show ? (
     <Dialog
@@ -117,14 +127,13 @@ const LoginDialog = ({ show, onClose, dialogProps }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle sx={{ fontSize: "1rem" }} id="alert-dialog-title">
-        {dialogProps.title}
+        {showSignUp ? "Sign Up" : dialogProps.title}
       </DialogTitle>
       <DialogContent>
         {useAccessCode && (
           <div>
             <Typography>
-              AmbientWare is undergoing beta testing. Please reach out for
-              access!
+              `Boilerplate` is undergoing beta testing. Please reach out for access!
             </Typography>
             <div style={{ marginTop: 20 }}></div>
           </div>
@@ -236,6 +245,7 @@ LoginDialog.propTypes = {
   show: PropTypes.bool,
   onClose: PropTypes.func,
   dialogProps: PropTypes.object,
+  showSignUpDialog: PropTypes.bool,
 };
 
 export default LoginDialog;

@@ -58,6 +58,7 @@ COPY --from=frontend /app/packages/frontend/dist /app/packages/frontend/dist
 COPY --from=backend /app/packages/backend/dist /app/packages/backend/dist
 # copy the run file from the local backend directory
 COPY packages/backend/main.py /app/packages/backend/main.py
+COPY packages/backend/entrypoint.sh /app/packages/backend/entrypoint.sh
 
 # Install the built Python package
 WORKDIR /app/packages/backend
@@ -67,4 +68,4 @@ RUN pip install dist/*.whl
 WORKDIR /app/packages/backend
 
 # Define the command to run your application
-CMD ["python", "main.py"]
+CMD ["./entrypoint.sh"]

@@ -14,6 +14,8 @@ from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.users import users_router
 from app.api.api_v1.routers.main_routes import main_router
 from app.api.api_v1.routers.subscriptions import subscription_router
+from app.api.api_v1.routers.health import health_routers
+from app.api.api_v1.routers.credentials import credential_routers
 from app.core.custom_logging import CustomizeLogger
 from app.core.config import FRONTEND_BUILD_DIR
 
@@ -59,10 +61,10 @@ def create_app() -> FastAPI:
     # check env
     if app_settings.ENV_NAME != "prod" and app_settings.ENV_NAME != None:
         logger.warning(
-            f"Not for production. CONF_TYPE is set to {app_settings.ENV_NAME}"
+            f"Not for production. ENV_NAME is set to {app_settings.ENV_NAME}"
         )
     else:
-        logger.info("Running in production environment! CONF_TYPE is set to prod")
+        logger.info("Running in production environment! ENV_NAME is set to prod")
 
     # Routers
     server.include_router(
@@ -76,7 +78,13 @@ def create_app() -> FastAPI:
         prefix="/api/v1",
         tags=["subscriptions"],
     )
+    server.include_router(
+        credential_routers,
+        prefix="/api/v1",
+        tags=["credentials"],
+    )
     server.include_router(auth_router, prefix="/api/v1", tags=["auth"])
+    server.include_router(health_routers, tags=["health"])
     server.include_router(main_router)
 
     # Set the path to your React app's build directory

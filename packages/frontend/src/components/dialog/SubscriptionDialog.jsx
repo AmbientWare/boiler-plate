@@ -23,7 +23,9 @@ import { getCurrencySymbol } from "@utils/genericHelper";
 
 const SubscriptionDialog = ({ show, onCancel }) => {
   const portalElement = document.getElementById("portal");
-  const [options, setOptions] = useState([]); // Initialized as an array
+  const [options, setOptions] = useState([]);
+
+  const dialogWidth = (250 * options.length).toString() + "px";
 
   useEffect(() => {
     subscriptions
@@ -40,7 +42,7 @@ const SubscriptionDialog = ({ show, onCancel }) => {
     <Dialog
       onClose={onCancel}
       open={show}
-      fullWidth
+      width={dialogWidth}
       maxWidth="md"
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"

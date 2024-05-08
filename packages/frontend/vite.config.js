@@ -24,6 +24,7 @@ export default defineConfig({
       "@themes": path.resolve(__dirname, "src/themes"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@views": path.resolve(__dirname, "src/views"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
     },
   },
 });

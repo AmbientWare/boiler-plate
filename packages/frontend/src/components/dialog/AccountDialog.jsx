@@ -27,7 +27,7 @@ const AccountDialog = ({ show, onCancel, showSubs }) => {
   const manageSubscriptionClick = async (status) => {
     if (status === "active" || status === "trialing") {
       const subscriptionDetails = await axios.get(
-        `${baseURL}/api/v1/subscriptions/portal`,
+        `${baseURL}/api/v1/subscriptions/portal`
       );
       // redirect to subscription management portal
       window.location.href = subscriptionDetails.data;
@@ -39,13 +39,12 @@ const AccountDialog = ({ show, onCancel, showSubs }) => {
 
   useEffect(() => {
     const subscriptionDetails = axios.get(
-      `${baseURL}/api/v1/subscriptions/user`,
+      `${baseURL}/api/v1/subscriptions/user`
     );
 
     Promise.all([subscriptionDetails])
       .then(([subscriptionDetails]) => {
         setData(subscriptionDetails.data);
-        console.log(subscriptionDetails.data);
       })
       .catch((error) => {
         console.error("Error fetching customer subscription data:", error);

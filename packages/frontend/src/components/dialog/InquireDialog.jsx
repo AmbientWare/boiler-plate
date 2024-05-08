@@ -17,14 +17,14 @@ function InquireDialog({ isOpen, onClose }) {
       <DialogTitle variant="h1">Inquiry</DialogTitle>
       <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
         <DialogContentText variant="h2">
-          AmbientWare software is currently undergoing Beta testing! If
+          `Boilerplate` software is currently undergoing Beta testing! If
           interested, please email us at{" "}
           <Link
-            href="mailto:info@ambientware.co"
+            href="mailto:info@boilerplate.co"
             target="_blank"
             rel="noopener noreferrer"
           >
-            info@ambientware.co
+            info@boilerplate.co
           </Link>
         </DialogContentText>
       </DialogContent>

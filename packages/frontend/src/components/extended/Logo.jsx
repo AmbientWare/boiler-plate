@@ -1,5 +1,5 @@
-import logoWhite from "@assets/images/ambientware_white.png";
-import logoBlack from "@assets/images/ambientware_black.png";
+import logoWhite from "@assets/images/logo-white.png";
+import logoBlack from "@assets/images/logo-black.png";
 
 import { useSelector } from "react-redux";
 
@@ -13,9 +13,9 @@ const Logo = () => {
       style={{ alignItems: "center", display: "flex", flexDirection: "row" }}
     >
       <img
-        style={{ objectFit: "contain", height: "auto", width: 150 }}
-        src={customization.isDarkMode ? logoWhite : logoBlack}
-        alt="AmbientWare"
+        style={{ objectFit: "contain", height: "auto", width: 75 }}
+        src={customization.isDarkMode ? logoBlack : logoWhite}
+        alt="Boilerplate"
       />
     </div>
   );

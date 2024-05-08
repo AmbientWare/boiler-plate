@@ -8,8 +8,12 @@ from loguru import logger
 from app.db import models, schemas, session
 from app.db.crud import get_user_by_email, create_user
 from app.core import security
+from app.core import config
 
 db = session.SessionLocal()
+app_config = config.get_app_settings()
+
+DEV_USER = {"email": "z@z.com", "name": "Super User", "role": "admin"}
 
 
 async def get_current_user(
@@ -40,7 +44,10 @@ async def get_current_user(
 async def get_current_active_user(
     request: Request,
 ) -> models.User:
-    current_user = request.session.get("user")
+    current_user = (
+        request.session.get("user") if not app_config.ENV_NAME == "dev" else DEV_USER
+    )
+
     if not current_user:
         raise HTTPException(status_code=400, detail="Inactive user")
 

@@ -19,6 +19,9 @@ class InterceptHandler(logging.Handler):
     }
 
     def emit(self, record):
+        if "/health" in record.getMessage():
+            return
+
         try:
             level = logger.level(record.levelname).name
         except AttributeError:
@@ -37,7 +40,7 @@ class CustomizeLogger:
     @classmethod
     def make_logger(cls, logging_config: dict):
         logger = cls.customize_logging(  # type: ignore
-            logging_config.get("path", "/tmp/ambient/logs"),
+            logging_config.get("path", "/tmp/app/logs"),
             level=logging_config.get("level", "info"),
             retention=logging_config.get("retention", "7 days"),
             rotation=logging_config.get("rotation", "7 days"),

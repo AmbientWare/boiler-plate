@@ -157,7 +157,7 @@ export const initNode = (nodeData, newNodeId) => {
     } else {
       const newOutput = {
         id: `${newNodeId}-output-${nodeData.name}-${nodeData.baseClasses.join(
-          "|",
+          "|"
         )}`,
         name: nodeData.name,
         label: nodeData.type,
@@ -286,7 +286,7 @@ export const convertDateStringToDateObject = (dateString) => {
     date.month(),
     date.date(),
     date.hours(),
-    date.minutes(),
+    date.minutes()
   );
 };
 
@@ -353,7 +353,7 @@ export const generateExportFlowData = (flowData) => {
       const nodeDataInputs = {};
       for (const input in node.data.inputs) {
         const inputParam = node.data.inputParams.find(
-          (inp) => inp.name === input,
+          (inp) => inp.name === input
         );
         if (inputParam && inputParam.type === "password") continue;
         if (inputParam && inputParam.type === "file") continue;
@@ -376,13 +376,13 @@ export const getAvailableNodesForVariable = (
   nodes,
   edges,
   target,
-  targetHandle,
+  targetHandle
 ) => {
   // example edge id = "llmChain_0-llmChain_0-output-outputPrediction-string|json-llmChain_1-llmChain_1-input-promptValues-string"
   //                    {source}  -{sourceHandle}                           -{target}  -{targetHandle}
   const parentNodes = [];
   const inputEdges = edges.filter(
-    (edg) => edg.target === target && edg.targetHandle === targetHandle,
+    (edg) => edg.target === target && edg.targetHandle === targetHandle
   );
   if (inputEdges && inputEdges.length) {
     for (let j = 0; j < inputEdges.length; j += 1) {
@@ -398,7 +398,7 @@ export const getUpsertDetails = (nodes, edges) => {
     (node) =>
       node.data.category === "Vector Stores" &&
       !node.data.label.includes("Upsert") &&
-      !node.data.label.includes("Load Existing"),
+      !node.data.label.includes("Load Existing")
   );
   const vsNodeIds = vsNodes.map((vs) => vs.data.id);
 
@@ -407,7 +407,7 @@ export const getUpsertDetails = (nodes, edges) => {
   for (const edge of edges) {
     if (vsNodeIds.includes(edge.source) || vsNodeIds.includes(edge.target)) {
       const vsNode = vsNodes.find(
-        (node) => node.data.id === edge.source || node.data.id === edge.target,
+        (node) => node.data.id === edge.source || node.data.id === edge.target
       );
       if (!vsNode || seenVsNodeIds.includes(vsNode.data.id)) continue;
       seenVsNodeIds.push(vsNode.data.id);
@@ -439,7 +439,7 @@ export const getUpsertDetails = (nodes, edges) => {
               .replace(/{{|}}/g, "")
               .split(".")[0];
             const textSplitterNode = nodes.find(
-              (node) => node.data.id === textSplitterId,
+              (node) => node.data.id === textSplitterId
             );
             if (textSplitterNode) innerNodes.push(textSplitterNode);
           }
@@ -482,15 +482,12 @@ export const throttle = (func, limit) => {
       lastRan = Date.now();
     } else {
       clearTimeout(lastFunc);
-      lastFunc = setTimeout(
-        () => {
-          if (Date.now() - lastRan >= limit) {
-            func(...args);
-            lastRan = Date.now();
-          }
-        },
-        limit - (Date.now() - lastRan),
-      );
+      lastFunc = setTimeout(() => {
+        if (Date.now() - lastRan >= limit) {
+          func(...args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
     }
   };
 };
@@ -540,7 +537,7 @@ export const getInputVariables = (paramValue) => {
       const variableEndIdx = startIdx;
       const variableFullPath = returnVal.substring(
         variableStartIdx,
-        variableEndIdx,
+        variableEndIdx
       );
       inputVariables.push(variableFullPath);
       variableStack.pop();
@@ -609,7 +606,7 @@ export const setLocalStorageChatflow = (chatflowid, chatId, chatHistory) => {
       const parsedChatDetails = JSON.parse(chatDetails);
       localStorage.setItem(
         `${chatflowid}_INTERNAL`,
-        JSON.stringify({ ...parsedChatDetails, ...obj }),
+        JSON.stringify({ ...parsedChatDetails, ...obj })
       );
     } catch (e) {
       const chatId = chatDetails;
@@ -632,7 +629,7 @@ export const getConfigExamplesForJS = (
   configData,
   bodyType,
   isMultiple,
-  stopNodeId,
+  stopNodeId
 ) => {
   let finalStr = "";
   configData = unshiftFiles(configData);
@@ -663,7 +660,7 @@ export const getConfigExamplesForPython = (
   configData,
   bodyType,
   isMultiple,
-  stopNodeId,
+  stopNodeId
 ) => {
   let finalStr = "";
   configData = unshiftFiles(configData);
@@ -694,7 +691,7 @@ export const getConfigExamplesForCurl = (
   configData,
   bodyType,
   isMultiple,
-  stopNodeId,
+  stopNodeId
 ) => {
   let finalStr = "";
   configData = unshiftFiles(configData);
@@ -734,11 +731,7 @@ export const validateNode = (node) => {
   node.data.inputParams.map((inputParam) => {
     if (inputParam.optional || inputParam.default) return null;
     if (node.data.inputs[inputParam.name]) return null;
-    if (
-      inputParam.name === "credential" &&
-      (node.data.inputs["FLOWISE_CREDENTIAL_ID"] || node.data.credential)
-    )
-      return null;
+    if (inputParam.name === "credential" || node.data.credential) return null;
     unconfigured.push(inputParam);
     return null;
   });

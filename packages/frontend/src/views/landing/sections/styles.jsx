@@ -1,17 +1,19 @@
 export const LandingStyles = {
   pixelGridContainer: {
+    width: "100%",
+    height: "100%",
     position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     zIndex: 0,
-    borderRadius: "20%",
+    // borderRadius: "20%",
   },
   contentContainer: {
+    display: "flex",
+    flexDirection: "column",
     position: "relative",
     zIndex: 1, // Ensures content is above the pixel grid
     pointerEvents: "none",
+    justifyContent: "center",
+    alignItems: "center",
   },
   interactiveElement: {
     pointerEvents: "auto", // Ensures interactive elements can be clicked

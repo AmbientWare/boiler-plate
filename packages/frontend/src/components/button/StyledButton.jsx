@@ -17,5 +17,5 @@ export const StyledToggleButton = styled(MuiToggleButton)(
       color: "white",
       backgroundColor: theme.palette[color].main,
     },
-  }),
+  })
 );

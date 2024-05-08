@@ -1,5 +1,5 @@
 // constant
-export const gridSpacing = 3;
+export const gridSpacing = 2;
 export const drawerWidth = 260;
 export const appDrawerWidth = 320;
 export const maxScroll = 100000;
@@ -8,5 +8,4 @@ export const baseURL =
     ? window.location.origin
     : window.location.origin.replace(":5173", ":8000");
 export const uiBaseURL = window.location.origin;
-export const scheduleLink = "https://calendly.com/ambientware/30min";
-export const FLOWISE_CREDENTIAL_ID = "FLOWISE_CREDENTIAL_ID";
+export const scheduleLink = "https://calendly.com/application/30min";

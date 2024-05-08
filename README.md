@@ -1,4 +1,4 @@
-# ambient-app
+# boilerplate-app
 
 ## Description
 This repository contains a full-stack web application with a Python FastAPI backend and a Vite app with React frontend. The backend is located in the `packages/backend` directory, while the frontend is located in the `packages/frontend` directory.
@@ -30,6 +30,11 @@ The backend is a Python FastAPI application. It includes an `app` directory for 
     ```bash
     poetry install
     ```
+4. create a ENCRYPTION_KEY with the following command and update env file
+    ```python
+    poetry run python scripts/generate_encryption_key.py
+    ```
+    Note: This can be run without the poetry command if the poetry env is active.
 4. Start the FastAPI application:
     ```bash
     poetry run python main.py

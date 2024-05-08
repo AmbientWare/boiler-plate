@@ -1,17 +1,18 @@
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
-from datetime import datetime
+from datetime import datetime, UTC
 
 
 from .session import Base
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
+
 class BaseTable(Base):
     __abstract__ = True
 
     id = Column(Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, default=datetime.now(datetime.UTC))
-    updated_at = Column(DateTime, default=datetime.now(datetime.UTC), onupdate=datetime.now(datetime.UTC))
+    created_at = Column(DateTime, default=datetime.now(UTC))
+    updated_at = Column(DateTime, default=datetime.now(UTC), onupdate=datetime.now(UTC))
 
 
 class User(BaseTable):
@@ -28,6 +29,19 @@ class User(BaseTable):
     created_teams = relationship("Team", back_populates="creator")
     memberships = relationship("TeamMember", back_populates="user")
     subscriptions = relationship("Subscription", back_populates="user")
+    credentials = relationship("Credential", back_populates="user")
+
+
+class Credential(BaseTable):
+    __tablename__ = "credential"
+
+    name = Column(String, index=True, nullable=False)
+    credentialName = Column(String, index=True, nullable=False)
+    encrypted_data = Column(String, nullable=True)
+    # foreign keys
+    user_id = Column(Integer, ForeignKey("user.id"), index=True, nullable=True)
+
+    user = relationship("User", back_populates="credentials")
 
 
 class Token(BaseTable):

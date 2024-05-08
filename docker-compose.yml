@@ -1,19 +1,41 @@
 version: '3.8'
 
-# create a network for the services to communicate
 networks:
-  ambient:
+  app-network:
+
+volumes:
+  app-logs:
+  postgres-data:
 
 services:
   app:
-    image: ambient-app:latest
+    image: app:latest
     build:
       context: .
       dockerfile: Dockerfile
     env_file:
       - .env
+    environment:
+      DATABASE_URL: 'postgresql://application:password@postgres:5432/application'
     networks:
-      - ambient
+      - app-network
+    volumes:
+      - app-logs:/tmp/app
     ports:
       - "8000:8000"
-    command: ["python", "main.py"]
+    command: ./entrypoint.sh
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    networks:
+      - app-network
+    restart: always
+    environment:
+      POSTGRES_USER: application
+      POSTGRES_PASSWORD: password
+    # ports:
+    #   - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data:cached

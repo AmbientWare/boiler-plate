@@ -1,8 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { FormControl, OutlinedInput, InputBase, Popover } from "@mui/material";
+import {
+  FormControl,
+  OutlinedInput,
+  InputBase,
+  Popover,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-// project imports
+// Project imports
 import SelectVariable from "@components/json/SelectVariable";
 import { getAvailableNodesForVariable } from "@utils/genericHelper";
 
@@ -18,8 +27,9 @@ export const Input = ({
   const [myValue, setMyValue] = useState(value ?? "");
   const [anchorEl, setAnchorEl] = useState(null);
   const [availableNodesForVariable, setAvailableNodesForVariable] = useState(
-    [],
+    []
   );
+  const [showPassword, setShowPassword] = useState(false);
   const ref = useRef(null);
 
   const openPopOver = Boolean(anchorEl);
@@ -34,12 +44,17 @@ export const Input = ({
     setMyValue(newVal);
   };
 
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   const getInputType = (type) => {
+    if (type === "password") {
+      return showPassword ? "text" : "password";
+    }
     switch (type) {
       case "string":
         return "text";
-      case "password":
-        return "password";
       case "number":
         return "number";
       default:
@@ -61,6 +76,19 @@ export const Input = ({
       setAnchorEl(ref.current);
     }
   }, [myValue]);
+
+  const inputAdornment =
+    inputParam.type === "password" ? (
+      <InputAdornment position="end">
+        <IconButton
+          aria-label="toggle password visibility"
+          onClick={handleTogglePasswordVisibility}
+          edge="end"
+        >
+          {showPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ) : null;
 
   return (
     <>
@@ -98,6 +126,7 @@ export const Input = ({
                 },
               },
             }}
+            endAdornment={inputAdornment}
           />
         </FormControl>
       ) : (
@@ -122,6 +151,7 @@ export const Input = ({
                 height: inputParam.rows ? "90px" : "inherit",
               },
             }}
+            endAdornment={inputAdornment}
           />
         </FormControl>
       )}

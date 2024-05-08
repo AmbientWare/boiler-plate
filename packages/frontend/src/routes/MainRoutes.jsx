@@ -1,22 +1,22 @@
-// import { lazy } from 'react'
+import { lazy } from "react";
 
 // project imports
 import MainLayout from "@layout/MainLayout";
-// import Loadable from 'components/loading/Loadable'
+import Loadable from "@components/loading/Loadable";
 
 // dashboard routing
-// const Dashboard = Loadable(lazy(() => import('views/dashboards')))
+const Home = Loadable(lazy(() => import('@src/views/home')))
 
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-  path: "/home",
+  path: "/app",
   element: <MainLayout />,
   children: [
-    // {
-    //     path: '/dashboards',
-    //     element: <Dashboard />
-    // },
+    {
+      path: "/app/home",
+      element: <Home />,
+    },
   ],
 };
 

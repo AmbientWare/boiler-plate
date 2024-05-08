@@ -5,7 +5,7 @@
   height: 100%; /* Full height of its container */
   width: 100%; /* Full width of its container */
   overflow: hidden; /* In case of slight miscalculations */
-  position: relative; /* Needed for positioning the pseudo-element */
+  border: 1px solid red; /* Temporary border */
 }
 
 .pixel {
@@ -24,7 +24,7 @@
   transform: translate(-50%, -50%);
   width: 2px; /* Size of the white dot */
   height: 2px;
-  background-color: grey;
+  background-color: rgb(188, 188, 188);
   border-radius: 50%;
 }
 

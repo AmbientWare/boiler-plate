@@ -1,52 +1,62 @@
+import { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import { Box, Typography } from "@mui/material";
 import { IconInfoSquareRounded, IconCalendar } from "@tabler/icons-react";
 
 // project imports
-import { LandingStyles } from "./styles";
 import SectionHeader from "@components/section/section-header";
 import { StyledButton } from "@components/button/StyledButton";
-import { PixelGrid } from "@components/pixelGrid/pixelGrid";
-import { scheduleLink } from "@store/constant";
+import BannerImage from "@assets/images/banner-img.png";
 
-export default function Banner({ onInquire }) {
+export default function Banner({ onInquire, onSignUp }) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    // Function to update the state with the current window width
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Setting up the event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Ensuring the effect runs only once (like componentDidMount)
+
   return (
     <>
       <Box
-        position={"relative"}
-        sx={{
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        id="home"
+        display={"flex"}
+        flexDirection={"row"}
+        alignItems={"flex-start"}
+        minHeight={"500px"}
       >
-        <Box sx={LandingStyles.pixelGridContainer}>
-          <PixelGrid />
-        </Box>
-        <Box sx={LandingStyles.contentContainer}>
+        <Box sx={{ width: windowWidth > 1075 ? "50%" : "100%" }}>
           <SectionHeader
-            isWhite={true}
-            title="Your Gateway to Intelligent Applications"
+            isWhite={false}
+            title="Never miss a test with automated daily notifications"
           />
           <Typography
             sx={{
-              pb: "50px",
-              fontSize: "24px",
-              color: "white",
-              textAlign: "center",
+              fontSize: "18px",
+              color: "black",
+              textAlign: "left",
+              pb: "25px",
             }}
           >
-            Rapidly build and instantly deploy AI solutions.
+            `Boilerplate` takes care of the calling process for you - ensuring
+            you never forget to call. We make your call for you every day and
+            update you along the way.
           </Typography>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "left",
               alignItems: "center",
-              gap: "10px",
+              gap: "25px",
             }}
           >
             <StyledButton
@@ -59,11 +69,13 @@ export default function Banner({ onInquire }) {
                 fontSize: "24px",
                 padding: "10px 20px",
                 borderRadius: "30px",
+                height: "60px",
+                minWidth: "200px",
               }}
               startIcon={<IconCalendar />}
-              onClick={() => (window.location.href = scheduleLink)}
+              onClick={() => onSignUp()}
             >
-              Schedule a Demo
+              Sign Up Now!
             </StyledButton>
             <StyledButton
               type="submit"
@@ -75,6 +87,8 @@ export default function Banner({ onInquire }) {
                 fontSize: "24px",
                 padding: "10px 20px",
                 borderRadius: "30px",
+                height: "60px",
+                minWidth: "175px",
               }}
               startIcon={<IconInfoSquareRounded />}
               onClick={() => onInquire()}
@@ -83,6 +97,22 @@ export default function Banner({ onInquire }) {
             </StyledButton>
           </Box>
         </Box>
+        <Box
+          sx={{
+            display: windowWidth < 1075 ? "none" : "flex",
+            height: "80%",
+            flexGrow: 1,
+            alignItems: "flex-start",
+            boxShadow: "none",
+          }}
+          style={{
+            backgroundImage: `url(${BannerImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+            boxShadow: "none",
+          }}
+        />
       </Box>
     </>
   );
@@ -90,4 +120,5 @@ export default function Banner({ onInquire }) {
 
 Banner.propTypes = {
   onInquire: PropTypes.func,
+  onSignUp: PropTypes.func,
 };

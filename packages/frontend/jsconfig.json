@@ -12,7 +12,8 @@
       "@store/*": ["src/store/*"],
       "@themes/*": ["src/themes/*"],
       "@utils/*": ["src/utils/*"],
-      "@views/*": ["src/views/*"]
+      "@views/*": ["src/views/*"],
+      "@hooks/*": ["src/hooks/*"],
     }
   }
 }

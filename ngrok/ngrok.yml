@@ -1,0 +1,11 @@
+# ngrok config file
+version: 2
+
+authtoken: 2fX2WB0RzdoO6a8v35C91leceDv_4KC8ft6djJEgqMAQ2mMTc
+
+tunnels:
+  app:
+    proto: http
+    addr: http://app:8080
+    host_header: "callmates.ngrok.dev"
+    domain: callmates.ngrok.dev

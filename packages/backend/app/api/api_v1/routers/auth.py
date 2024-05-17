@@ -1,5 +1,6 @@
 # type: ignore
 import os
+from app.db.PostgresDb import models
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from loguru import logger
 from starlette.responses import RedirectResponse, HTMLResponse
@@ -7,7 +8,7 @@ from authlib.integrations.starlette_client import OAuth, OAuthError
 
 from app.db.session import get_db
 from app.core.auth import authenticate_user, sign_up_new_user, get_current_active_user
-from app.db import models
+from app.db import app_db
 from app.api.api_v1.routers.schemes import LoginData, SignUpData
 
 
@@ -32,7 +33,7 @@ oauth.register(
 )
 
 
-def user_to_dict(user: models.User) -> dict:
+def user_to_dict(user: app_db.Users) -> dict:
     """
     Convert a User object to a serializable dictionary.
     This function is used to add the user to the session.
@@ -53,9 +54,8 @@ def add_user_to_session(request: Request, user: dict):
 async def login(
     request: Request,
     data: LoginData,
-    db=Depends(get_db),
 ):
-    user = authenticate_user(db, data.email, data.password)
+    user = authenticate_user(data.email, data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -77,9 +77,8 @@ async def logout(request: Request):
 async def signup(
     request: Request,
     data: SignUpData,
-    db=Depends(get_db),
 ):
-    user = sign_up_new_user(db, data.name, data.email, data.password)
+    user = sign_up_new_user(data.name, data.email, data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -96,19 +95,18 @@ async def login_via_google(request: Request):
 
 
 @r.get("/auth/google")
-async def auth(request: Request, db=Depends(get_db)):
+async def auth(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
     except OAuthError as error:
         return HTMLResponse(f"<h1>{error.error}</h1>")
+
     user = token.get("userinfo")
     if user:
         # Check if user exists in the database
         current_user = sign_up_new_user(
-            db,
             name=user["name"],
             email=user["email"],
-            picture=user["picture"],
         )
 
         # add new user to the session

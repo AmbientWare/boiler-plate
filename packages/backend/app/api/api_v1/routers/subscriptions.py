@@ -6,6 +6,7 @@ from loguru import logger
 from app.services import stripe_service
 from app.core import config
 from app.core.auth import get_current_active_user
+from app.db import app_db
 
 app_config = config.get_app_settings()
 
@@ -16,6 +17,7 @@ subscription_router = r = APIRouter()
 @r.get("/subscriptions/plans")
 async def get_subscription_plans():
     plans = await stripe_service.get_subscription_plans()
+
     return plans
 
 
@@ -28,13 +30,15 @@ async def get_user_plan(user=Depends(get_current_active_user)):
 
     sub = await stripe_service.get_user_subscription(user)
 
+    print("cman", sub)
+
     return sub
 
 
 # return the customer portal url
 @r.get("/subscriptions/portal")
 async def get_customer_portal(request: Request, user=Depends(get_current_active_user)):
-    return_url = str(request.base_url) + "home"  # type: ignore
+    return_url = str(request.base_url) + "app/home"  # type: ignore
 
     return await stripe_service.get_customer_portal(user, return_url)
 

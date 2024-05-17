@@ -15,7 +15,7 @@ const Logo = () => {
       <img
         style={{ objectFit: "contain", height: "auto", width: 75 }}
         src={customization.isDarkMode ? logoBlack : logoWhite}
-        alt="Boilerplate"
+        alt="Callmates"
       />
     </div>
   );

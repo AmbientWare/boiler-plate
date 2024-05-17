@@ -133,7 +133,7 @@ const LoginDialog = ({
         {useAccessCode && (
           <div>
             <Typography>
-              `Boilerplate` is undergoing beta testing. Please reach out for access!
+              Callmates is undergoing beta testing. Please reach out for access!
             </Typography>
             <div style={{ marginTop: 20 }}></div>
           </div>

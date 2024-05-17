@@ -3,6 +3,16 @@ from pydantic import BaseModel
 import typing as t
 from enum import Enum
 from sqlalchemy import JSON
+import datetime
+
+
+class BaseDbModel(BaseModel):
+    id: str
+    created_at: t.Union[str, datetime.datetime, None]
+    updated_at: t.Union[str, datetime.datetime, None]
+
+    class Config:
+        from_attributes = True
 
 
 class Roles(str, Enum):
@@ -11,11 +21,10 @@ class Roles(str, Enum):
     GUEST: str = "guest"
 
 
-class UserBase(BaseModel):
+class UserBase(BaseDbModel):
     email: str
     name: str = None
     role: str = Roles.USER
-    picture: t.Optional[str] = None
     is_confirmed: t.Optional[bool] = False
 
 
@@ -37,32 +46,40 @@ class UserEdit(UserBase):
         from_attributes = True
 
 
-class User(UserBase):
-    id: int
+class Users(UserBase):
+    id: str
 
     class Config:
         from_attributes = True
 
 
-class Subscription(BaseModel):
-    user_id: int
+class Subscriptions(BaseDbModel):
+    user_id: str
     subscription_id: str
     price_id: str
     status: str = "active"
+    customer_id: str
 
 
-class Team(BaseModel):
+class Credentials(BaseDbModel):
+    user_id: int
+    name: str
+    credentialName: str
+    encrypted_data: str
+
+
+class Team(BaseDbModel):
     id: int
     creator_id: int
     name: str
     description: str = None
 
 
-class Token(BaseModel):
+class Token(BaseDbModel):
     access_token: str
     token_type: str
 
 
-class TokenData(BaseModel):
+class TokenData(BaseDbModel):
     email: str = None
     permissions: str = "user"

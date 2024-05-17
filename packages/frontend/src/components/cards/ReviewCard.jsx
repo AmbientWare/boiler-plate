@@ -60,7 +60,7 @@ const ReviewCard = ({ isLoading, data }) => {
                 borderColor: theme.palette.primary[800] + 75,
               }}
               src={data.userImage}
-              alt=" Boilerplate User"
+              alt="Callmates User"
             />
             <Grid container direction="column" height={"100%"}>
               <div

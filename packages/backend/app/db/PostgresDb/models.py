@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from datetime import datetime, UTC
 
 
-from .session import Base
+from ..session import Base
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 

@@ -23,7 +23,7 @@ services:
     volumes:
       - app-logs:/tmp/app
     ports:
-      - "8000:8000"
+      - "8080:8080"
     command: ./entrypoint.sh
     depends_on:
       - postgres
@@ -41,7 +41,23 @@ services:
     networks:
       - app-network
     # ports:
-    #   - 8001:8000
+    #   - 8081:8081
+
+  ngrok:
+    image: ngrok-service:latest
+    build:
+      context: .
+      dockerfile: ./docker/ngrok.Dockerfile
+    networks:
+      - app-network
+    restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    # ports:
+    #   - 4040:4040
 
   postgres:
     image: postgres:16

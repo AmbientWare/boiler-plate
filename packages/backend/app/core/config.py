@@ -27,7 +27,9 @@ class APISettingsProd(BaseSettings):
     STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
     STRIPE_PUBLISHABLE_KEY: str = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
     STRIPE_WEBHOOK_KEY: str = os.getenv("STRIPE_WEBHOOK_KEY", "")
-    STRIPE_DEFAULT_PRODUCT_NAME: str = os.getenv("STRIPE_DEFAULT_PRODUCT_NAME", "Free")
+    STRIPE_DEFAULT_PRODUCT_NAME: str = os.getenv(
+        "STRIPE_DEFAULT_PRODUCT_NAME", "Monthly Subscription"
+    )
 
     LOGGING_CONFIG: dict = {
         "path": "/tmp/app/logs",

@@ -17,14 +17,14 @@ function InquireDialog({ isOpen, onClose }) {
       <DialogTitle variant="h1">Inquiry</DialogTitle>
       <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
         <DialogContentText variant="h2">
-          `Boilerplate` software is currently undergoing Beta testing! If
+          Callmates software is currently undergoing Beta testing! If
           interested, please email us at{" "}
           <Link
-            href="mailto:info@boilerplate.co"
+            href="mailto:info@callmates.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            info@boilerplate.co
+            info@callmates.co
           </Link>
         </DialogContentText>
       </DialogContent>

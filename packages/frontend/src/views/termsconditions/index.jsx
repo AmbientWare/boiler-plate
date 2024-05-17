@@ -22,12 +22,12 @@ const TermsConditions = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // if on mobile device (for now relying on browser width to determine this, navigate to mobile landing page)
-    if (window.innerWidth < 800) {
-      navigate("/mobile");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   // if on mobile device (for now relying on browser width to determine this, navigate to mobile landing page)
+  //   if (window.innerWidth < 800) {
+  //     navigate("/mobile");
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
     setLoginDialogProps({
@@ -71,17 +71,17 @@ const TermsConditions = () => {
               <strong>Terms and Conditions</strong>
             </h2>
 
-            <p>Welcome to Boilerplate!</p>
+            <p>Welcome to Callmates!</p>
 
             <p>
               These terms and conditions outline the rules and regulations for
-              the use of Boilerplate&apos;s Website, located at
-              www.Boilerplate.com.
+              the use of Callmates&apos;s Website, located at
+              www.Callmates.com.
             </p>
 
             <p>
               By accessing this website we assume you accept these terms and
-              conditions. Do not continue to use Boilerplate if you do not agree
+              conditions. Do not continue to use Callmates if you do not agree
               to take all of the terms and conditions stated on this page.
             </p>
 
@@ -115,8 +115,8 @@ const TermsConditions = () => {
             </h3>
 
             <p>
-              We employ the use of cookies. By accessing Boilerplate, you agreed
-              to use cookies in agreement with the Boilerplate&apos;s Privacy
+              We employ the use of cookies. By accessing Callmates, you agreed
+              to use cookies in agreement with the Callmates&apos;s Privacy
               Policy.
             </p>
 
@@ -133,19 +133,19 @@ const TermsConditions = () => {
             </h3>
 
             <p>
-              Unless otherwise stated, Boilerplate and/or its licensors own the
-              intellectual property rights for all material on Boilerplate. All
+              Unless otherwise stated, Callmates and/or its licensors own the
+              intellectual property rights for all material on Callmates. All
               intellectual property rights are reserved. You may access this
-              from Boilerplate for your own personal use subjected to
+              from Callmates for your own personal use subjected to
               restrictions set in these terms and conditions.
             </p>
 
             <p>You must not:</p>
             <ul>
-              <li>Republish material from Boilerplate</li>
-              <li>Sell, rent or sub-license material from Boilerplate</li>
-              <li>Reproduce, duplicate or copy material from Boilerplate</li>
-              <li>Redistribute content from Boilerplate</li>
+              <li>Republish material from Callmates</li>
+              <li>Sell, rent or sub-license material from Callmates</li>
+              <li>Reproduce, duplicate or copy material from Callmates</li>
+              <li>Redistribute content from Callmates</li>
             </ul>
 
             <p>This Agreement shall begin on the date hereof.</p>
@@ -153,19 +153,19 @@ const TermsConditions = () => {
             <p>
               Parts of this website offer an opportunity for users to post and
               exchange opinions and information in certain areas of the website.
-              Boilerplate does not filter, edit, publish or review Comments
+              Callmates does not filter, edit, publish or review Comments
               prior to their presence on the website. Comments do not reflect
-              the views and opinions of Boilerplate,its agents and/or
+              the views and opinions of Callmates,its agents and/or
               affiliates. Comments reflect the views and opinions of the person
               who post their views and opinions. To the extent permitted by
-              applicable laws, Boilerplate shall not be liable for the Comments
+              applicable laws, Callmates shall not be liable for the Comments
               or for any liability, damages or expenses caused and/or suffered
               as a result of any use of and/or posting of and/or appearance of
               the Comments on this website.
             </p>
 
             <p>
-              Boilerplate reserves the right to monitor all Comments and to
+              Callmates reserves the right to monitor all Comments and to
               remove any Comments which can be considered inappropriate,
               offensive or causes breach of these Terms and Conditions.
             </p>
@@ -194,7 +194,7 @@ const TermsConditions = () => {
             </ul>
 
             <p>
-              You hereby grant Boilerplate a non-exclusive license to use,
+              You hereby grant Callmates a non-exclusive license to use,
               reproduce, edit and authorize others to use, reproduce and edit
               any of your Comments in any and all forms, formats or media.
             </p>
@@ -256,7 +256,7 @@ const TermsConditions = () => {
               ourselves or to our accredited businesses; (b) the organization
               does not have any negative records with us; (c) the benefit to us
               from the visibility of the hyperlink compensates the absence of
-              Boilerplate; and (d) the link is in the context of general
+              Callmates; and (d) the link is in the context of general
               resource information.
             </p>
 
@@ -271,7 +271,7 @@ const TermsConditions = () => {
             <p>
               If you are one of the organizations listed in paragraph 2 above
               and are interested in linking to our website, you must inform us
-              by sending an e-mail to Boilerplate. Please include your name,
+              by sending an e-mail to Callmates. Please include your name,
               your organization name, contact information as well as the URL of
               your site, a list of any URLs from which you intend to link to our
               Website, and a list of the URLs on our site to which you would
@@ -295,7 +295,7 @@ const TermsConditions = () => {
             </ul>
 
             <p>
-              No use of Boilerplate&apos;s logo or other artwork will be allowed
+              No use of Callmates&apos;s logo or other artwork will be allowed
               for linking absent a trademark license agreement.
             </p>
 

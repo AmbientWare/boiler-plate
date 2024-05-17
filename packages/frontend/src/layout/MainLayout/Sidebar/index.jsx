@@ -38,11 +38,11 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           <MenuList />
         </PerfectScrollbar>
       </BrowserView>
-      <MobileView>
+      {/* <MobileView>
         <Box sx={{ px: 2 }}>
           <MenuList />
         </Box>
-      </MobileView>
+      </MobileView> */}
     </>
   );
 

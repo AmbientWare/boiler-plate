@@ -22,12 +22,12 @@ const PrivacyPolicy = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // if on mobile device (for now relying on browser width to determine this, navigate to mobile landing page)
-    if (window.innerWidth < 800) {
-      navigate("/mobile");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   // if on mobile device (for now relying on browser width to determine this, navigate to mobile landing page)
+  //   if (window.innerWidth < 800) {
+  //     navigate("/mobile");
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
     setLoginDialogProps({
@@ -67,13 +67,13 @@ const PrivacyPolicy = () => {
           }}
         >
           <Box sx={{ height: "calc(100vh - 70px)", width: "90%", pt: 10 }}>
-            <h1>Privacy Policy for Boilerplate</h1>
+            <h1>Privacy Policy for Callmates</h1>
 
             <p>
-              At Boilerplate, accessible from www.Boilerplate.com, one of our main
+              At Callmates, accessible from www.Callmates.com, one of our main
               priorities is the privacy of our visitors. This Privacy Policy
               document contains types of information that is collected and
-              recorded by Boilerplate and how we use it.
+              recorded by Callmates and how we use it.
             </p>
 
             <p>
@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
             <h2>Log Files</h2>
 
             <p>
-              Boilerplate follows a standard procedure of using log files. These
+              Callmates follows a standard procedure of using log files. These
               files log visitors when they visit websites. All hosting companies
               do this and a part of hosting services analytics. The information
               collected by log files include internet protocol (IP) addresses,
@@ -105,13 +105,13 @@ const PrivacyPolicy = () => {
 
             <p>
               You may consult this list to find the Privacy Policy for each of
-              the advertising partners of Boilerplate.
+              the advertising partners of Callmates.
             </p>
 
             <p>
               Third-party ad servers or ad networks uses technologies like
               cookies, JavaScript, or Web Beacons that are used in their
-              respective advertisements and links that appear on Boilerplate,
+              respective advertisements and links that appear on Callmates,
               which are sent directly to users&apos; browser. They automatically
               receive your IP address when this occurs. These technologies are
               used to measure the effectiveness of their advertising campaigns
@@ -120,14 +120,14 @@ const PrivacyPolicy = () => {
             </p>
 
             <p>
-              Note that Boilerplate has no access to or control over these
+              Note that Callmates has no access to or control over these
               cookies that are used by third-party advertisers.
             </p>
 
             <h2>Third Party Privacy Policies</h2>
 
             <p>
-              Boilerplate&apos;s Privacy Policy does not apply to other
+              Callmates&apos;s Privacy Policy does not apply to other
               advertisers or websites. Thus, we are advising you to consult
               consult the respective Privacy Policies of these third-party ad
               servers for more detailed information. It may practices and
@@ -144,14 +144,14 @@ const PrivacyPolicy = () => {
             <h2>Google Data Usage</h2>
 
             <p>
-              Our application, Boilerplate, may interact with Google services to
+              Our application, Callmates, may interact with Google services to
               enhance user experience and functionality. This interaction may
               involve the collection, processing, and storage of certain Google
               user data. We are committed to protecting your privacy and
               ensuring that your information is handled securely and
               responsibly. The following outlines how our application accesses,
               uses, stores, or shares Google user data: 1. **Collection of
-              Information:** Boilerplate may collect information, including but
+              Information:** Callmates may collect information, including but
               not limited to, Google user identifiers, email addresses, profile
               information, and other data related to Google services such as
               Drive or GMail. to provide specific features and services within
@@ -162,18 +162,18 @@ const PrivacyPolicy = () => {
               Google APIs. 3. **Storage of Information:** Any Google user data
               collected is securely stored on our servers and is retained only
               for as long as necessary to fulfill the purposes outlined in this
-              privacy policy. 4. **Sharing of Information:** Boilerplate does
+              privacy policy. 4. **Sharing of Information:** Callmates does
               not share Google user data with third parties, except as required
               by law or as necessary to provide the requested services. We do
               not sell, lease, or trade any user information. 5. **Security
               Measures:** We employ industry-standard security measures to
               protect against unauthorized access, alteration, disclosure, or
               destruction of Google user data. It&apos;s essential to note that
-              your use of Google services within Boilerplate is subject to
+              your use of Google services within Callmates is subject to
               Google&apos;s own privacy policies and terms of service. Please
               review Google&apos;s policies to understand how your data is
               handled by them. For any questions or concerns regarding the
-              handling of Google user data in Boilerplate, please do not
+              handling of Google user data in Callmates, please do not
               hesitate to contact us.
             </p>
 
@@ -187,7 +187,7 @@ const PrivacyPolicy = () => {
             </p>
 
             <p>
-              Boilerplate does not knowingly collect any Personal Identifiable
+              Callmates does not knowingly collect any Personal Identifiable
               Information from children under the age of 13. If you think that
               your child provided this kind of information on our website, we
               strongly encourage you to contact us immediately and we will do
@@ -200,7 +200,7 @@ const PrivacyPolicy = () => {
             <p>
               This Privacy Policy applies only to our online activities and is
               valid for visitors to our website with regards to the information
-              that they shared and/or collect in Boilerplate. This policy is not
+              that they shared and/or collect in Callmates. This policy is not
               applicable to any information collected offline or via channels
               other than this website.
             </p>

@@ -28,6 +28,7 @@ import Transitions from "@components/extended/Transitions";
 import InfoDialog from "@components/dialog/InfoDialog";
 import AccountDialog from "@components/dialog/AccountDialog";
 import SubscriptionDialog from "@components/dialog/SubscriptionDialog";
+import UpdateSubscriptionDialog from "@src/components/dialog/UpdateSubscriptionDialog";
 
 // assets
 import {
@@ -50,6 +51,8 @@ const ProfileSection = ({ username, handleLogout }) => {
   const [aboutDialogOpen, setAboutDialogOpen] = useState(false);
   const [accountDialogOpen, setAccountDialogOpen] = useState(false);
   const [subscriptionDialogOpen, setSubscriptionDialogOpen] = useState(false);
+  const [updateSubscriptionDialogOpen, setUpdateSubscriptionDialogOpen] =
+    useState(false);
 
   const anchorRef = useRef(null);
 
@@ -212,7 +215,7 @@ const ProfileSection = ({ username, handleLogout }) => {
                           <ListItemText
                             primary={
                               <Typography variant="body2">
-                                About Boilerplate
+                                About Callmates
                               </Typography>
                             }
                           />
@@ -241,6 +244,10 @@ const ProfileSection = ({ username, handleLogout }) => {
       <SubscriptionDialog
         show={subscriptionDialogOpen}
         onCancel={() => setSubscriptionDialogOpen(false)}
+      />
+      <UpdateSubscriptionDialog
+        show={updateSubscriptionDialogOpen}
+        updateShow={(state) => setUpdateSubscriptionDialogOpen(state)}
       />
     </>
   );

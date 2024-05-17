@@ -22,7 +22,7 @@ export default function Footer() {
           Privacy Policy
         </Link>
         <div style={{ display: "inline-block", width: "100px" }} />
-        <Link color="textSecondary" href="mailto:info@boilerplate.co">
+        <Link color="textSecondary" href="mailto:info@callmates.com">
           Contact Us
         </Link>
       </Box>

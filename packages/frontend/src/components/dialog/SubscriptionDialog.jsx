@@ -135,7 +135,9 @@ const ProductDisplay = ({ option }) => {
               component="div"
               sx={{ fontWeight: "bold", color: "secondary.main" }}
             >
-              {`${getCurrencySymbol(option.currency)}${option.price}`}
+              {`${getCurrencySymbol(option.currency)}${(
+                option.price / 100
+              ).toFixed(2)}`}
             </Typography>
             <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
               {`/ ${option.recurring ? "Month" : "One time"}`}

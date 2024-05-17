@@ -134,6 +134,7 @@ const Home = () => {
             ),
           },
         });
+        getUserCredentialApi.request();
       }
     } catch (error) {
       const errorData = `${error.response.status}: ${error.response.data.detail}`;
@@ -193,6 +194,7 @@ const Home = () => {
             ),
           },
         });
+        getUserCredentialApi.request();
       }
     } catch (error) {
       const errorData = `${error.response.status}: ${error.response.data.detail}`;

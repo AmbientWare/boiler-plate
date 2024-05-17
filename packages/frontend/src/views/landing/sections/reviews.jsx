@@ -13,19 +13,19 @@ import UserThree from "@assets/images/user3.png";
 const gridItems = [
   {
     name: "David Cameron",
-    message: "I never missed a test when I used Boilerplate.",
+    message: "I never missed a test when I used Callmates.",
     userImage: UserOne,
     numStars: 5,
   },
   {
     name: "Daivd Cameron",
-    message: "Boilerplate helped me spend less time worrying about calling.",
+    message: "Callmates helped me spend less time worrying about calling.",
     userImage: UserTwo,
     numStars: 5,
   },
   {
     name: "David Cameron",
-    message: "Boilerplate is the best thing since sliced bread.",
+    message: "Callmates is the best thing since sliced bread.",
     userImage: UserThree,
     numStars: 4,
   },

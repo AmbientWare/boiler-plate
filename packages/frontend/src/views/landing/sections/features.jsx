@@ -74,7 +74,7 @@ export default function Features() {
             zIndex: 1,
           }}
         >
-          What `Boilerplate` can do for you:
+          What Callmates can do for you:
         </Typography>
       </Box>
       <Grid

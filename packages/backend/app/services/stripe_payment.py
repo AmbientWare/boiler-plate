@@ -1,10 +1,11 @@
 import stripe
-from typing import Literal, List, Union
+from typing import Literal, List, Union, Optional, Any
 
 # project imports
 from app.db.session import SessionLocal
-from app.db.schemas import User
-from app.db import models
+from app.db.schemas import Users
+from app.db.PostgresDb import models
+from app.db import app_db
 from app.core import config
 
 app_config = config.get_app_settings()
@@ -52,15 +53,15 @@ class Stripe:
             name=self.default_product_name,
             default_price_data={
                 "currency": "usd",
-                "unit_amount": 0,
+                "unit_amount": 700,
                 "recurring": {"interval": "month"},
             },
             features=[
-                {"name": "Awesome feature 1"},
-                {"name": "Awesome feature 2"},
-                {"name": "Awesome feature 3"},
+                {"name": "Automated hotline calls"},
+                {"name": "Stay informated with texts and emails"},
+                {"name": "First week free, then $7/month"},
             ],
-            description="Suitable for personal or business product exploration.",
+            description="Subscribe and never miss another test!",
             tax_code="txcd_10103001",  # software as a service, business use
         )
 
@@ -86,15 +87,11 @@ class Stripe:
 
         return return_data
 
-    async def get_user_subscription(self, user: User) -> models.Subscription:
+    async def get_user_subscription(self, user: Users) -> Optional[Any]:
         """Get the subscription for the user. If the user does not have a subscription return None."""
-        subscription = (
-            self.db.query(models.Subscription)
-            .filter(models.Subscription.user_id == user.id)
-            .first()
-        )
+        subscription = app_db.get_user_subscription(user.id)
 
-        return subscription
+        return subscription if subscription else None
 
     async def get_customer(self, customer_id: str) -> stripe.Customer:
         """Get the stripe customer by id."""
@@ -102,11 +99,11 @@ class Stripe:
 
     def _create_subscription(
         self,
-        user_id: int,
+        user_id: str,
         stripe_customer_id: str,
         stripe_sub: Union[dict, None],
         stripe_price: Union[dict, None],
-    ) -> Union[models.Subscription, None]:
+    ) -> Union[Any, None]:
         if stripe_sub is not None and stripe_price is not None:
             product = stripe.Product.retrieve(
                 stripe_sub.get("items", {})
@@ -116,11 +113,11 @@ class Stripe:
             )
             stripe_customer = stripe.Customer.retrieve(stripe_customer_id)
             # create a new subscription in the database
-            db_subscription = models.Subscription(
+            db_subscription = app_db.create_subscription(
                 user_id=user_id,
                 customer_id=stripe_customer_id,
-                subscription_email=stripe_customer.get("email"),
-                subscription_id=stripe_sub.get("id"),
+                subscription_email=stripe_customer.get("email", ""),
+                subscription_id=stripe_sub.get("id", ""),
                 price_id=stripe_sub.get("items", {})
                 .get("data", [])[0]
                 .get("price", {})
@@ -131,16 +128,13 @@ class Stripe:
                 billing_period=stripe_price.get("recurring", {}).get("interval"),
                 product_currency=stripe_price.get("currency"),
             )
-            self.db.add(db_subscription)
-            self.db.commit()
-            self.db.refresh(db_subscription)
 
             return db_subscription
 
         else:
             return None
 
-    def create_customer(self, user: User) -> Union[models.Subscription, None]:
+    def create_customer(self, user: Users) -> Union[models.Subscription, None]:
         """
         Create a new stripe customer and subscribe them to the default product.
         If the user already exists in stripe, add the subscription to the existing customer.
@@ -164,6 +158,7 @@ class Stripe:
 
             # subscribe the customer to the free product
             sub = stripe.Subscription.create(
+                trial_period_days=7,
                 customer=stripe_customer.id,
                 items=([{"price": str(self.default_price.get("id"))}]),
             )
@@ -176,7 +171,7 @@ class Stripe:
 
     async def create_session(
         self,
-        user: User,
+        user: Users,
         mode: Literal["payment", "setup", "subscription"] = "subscription",
     ) -> stripe.checkout.Session:
         """Create a new stripe checkout session."""
@@ -186,14 +181,10 @@ class Stripe:
         return session
 
     async def get_customer_portal(
-        self, owner: User, return_url: str
+        self, owner: Users, return_url: str
     ) -> Union[str, None]:
         """Get the customer portal url for the user. If the user does not have a subscription"""
-        sub = (
-            self.db.query(models.Subscription)
-            .filter(models.Subscription.user_id == owner.id)
-            .first()
-        )
+        sub = app_db.get_user_subscription(owner.id)
 
         if not sub:
             return None
@@ -215,31 +206,25 @@ class Stripe:
 
     async def _update_customer_info(
         self, customer: stripe.Customer
-    ) -> Union[models.User, None]:
+    ) -> Union[Any, None]:
         """Update the customer in the database."""
-        customer_sub = (
-            self.db.query(models.Subscription)
-            .filter(models.Subscription.customer_id == customer.get("id"))
-            .first()
-        )
+        customer_sub = app_db.get_user_subscription(customer.get("id", ""))
 
         if not customer_sub:
             return None
 
-        customer_sub.subscription_email = customer.get(
-            "email", customer_sub.subscription_email
+        customer_sub = app_db.update_subscription(
+            customer_sub.id, subscription_email=customer.get("email", "")
         )
-        self.db.commit()
-        self.db.refresh(customer_sub)
 
         return customer_sub
 
     async def _update_db_subscription(
         self,
-        subscription: models.Subscription,
+        subscription: Any,
         stripe_sub: Union[dict, None],
         stripe_price: Union[dict, None],
-    ) -> Union[models.Subscription, None]:
+    ) -> Union[Any, None]:
         if subscription and stripe_sub and stripe_price:
             product = stripe.Product.retrieve(
                 stripe_sub.get("items", {})
@@ -263,8 +248,11 @@ class Stripe:
             )
             subscription.product_currency = stripe_price.get("currency", "usd")
 
-            self.db.commit()
-            self.db.refresh(subscription)
+            update_dict = subscription.model_dump()
+            subscription = app_db.update_subscription(
+                subscription_id=update_dict.pop("id"),
+                **subscription,
+            )
 
             return subscription
 
@@ -276,11 +264,7 @@ class Stripe:
     ) -> Union[models.Subscription, None]:
         """Create a new subscription for the user and update the database."""
         # get the subscription based on the subscription id
-        subscription = (
-            self.db.query(models.Subscription)
-            .filter(models.Subscription.subscription_id == subscription_id)
-            .first()
-        )
+        subscription = app_db.get_subscription(subscription_id)
 
         if not subscription:
             return None
@@ -304,11 +288,7 @@ class Stripe:
     ) -> Union[models.Subscription, None]:
         """Update the subscription in the database."""
         # get the subscription based on the subscription id
-        db_sub = (
-            self.db.query(models.Subscription)
-            .filter(models.Subscription.subscription_id == subscription.get("id"))
-            .first()
-        )
+        db_sub = app_db.get_subscription(subscription.get("id", ""))
 
         stripe_price = stripe.Price.retrieve(
             subscription.get("items", {}).get("data", [])[0].get("price", {}).get("id")

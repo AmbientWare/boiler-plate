@@ -6,6 +6,7 @@ from typing import Optional
 from cryptography.fernet import Fernet
 import json
 import base64
+from typing import Union
 
 from app.core import config
 
@@ -68,7 +69,7 @@ def encrypt_json_data(data):
     return encrypted_base64
 
 
-def decrypt_json_data(encrypted_data):
+def decrypt_json_data(encrypted_data) -> Union[dict, None]:
     # Decode the Base64 encoded encrypted data to bytes
     try:
         encrypted_bytes = base64.urlsafe_b64decode(encrypted_data.encode("utf-8"))

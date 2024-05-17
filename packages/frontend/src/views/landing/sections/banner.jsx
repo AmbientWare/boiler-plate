@@ -47,7 +47,7 @@ export default function Banner({ onInquire, onSignUp }) {
               pb: "25px",
             }}
           >
-            `Boilerplate` takes care of the calling process for you - ensuring
+            Callmates takes care of the calling process for you - ensuring
             you never forget to call. We make your call for you every day and
             update you along the way.
           </Typography>

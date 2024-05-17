@@ -1,12 +1,13 @@
 # type: ignore
+from app.db.PostgresDb import models
 import jwt
 from fastapi import Depends, HTTPException, status, Request
 from jwt import PyJWTError
 from typing import Union
 from loguru import logger
 
-from app.db import models, schemas, session
-from app.db.crud import get_user_by_email, create_user
+from app.db import schemas, session, app_db
+from app.db.crud import create_user
 from app.core import security
 from app.core import config
 
@@ -16,9 +17,7 @@ app_config = config.get_app_settings()
 DEV_USER = {"email": "z@z.com", "name": "Super User", "role": "admin"}
 
 
-async def get_current_user(
-    db=Depends(session.get_db), token: str = Depends(security.oauth2_scheme)
-):
+async def get_current_user(token: str = Depends(security.oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -33,11 +32,14 @@ async def get_current_user(
             raise credentials_exception
         permissions: str = payload.get("permissions")
         token_data = schemas.TokenData(email=email, permissions=permissions)
+
     except PyJWTError:
         raise credentials_exception
+
     user = get_user_by_email(db, token_data.email)
     if user is None:
         raise credentials_exception
+
     return user
 
 
@@ -52,7 +54,8 @@ async def get_current_active_user(
         raise HTTPException(status_code=400, detail="Inactive user")
 
     # get user from db
-    current_user = get_user_by_email(db, current_user.get("email"))
+    current_user = app_db.get_user_by_email(current_user.get("email"))
+
     return current_user
 
 
@@ -65,14 +68,15 @@ async def get_current_active_superuser(
             status_code=403, detail="The user doesn't have enough privileges"
         )
     # get user from db
-    current_user = get_user_by_email(db, current_user.email)
+    current_user = app_db.get_user_by_email(current_user.email)
     return current_user
 
 
-def authenticate_user(db, email: str, password: str):
-    user: models.User = get_user_by_email(db, email)
+def authenticate_user(email: str, password: str):
+    user = app_db.get_user_by_email(email)
     if not user:
         return False
+
     if not security.verify_hash(password, user.hashed_password):
         return False
 
@@ -80,25 +84,14 @@ def authenticate_user(db, email: str, password: str):
 
 
 def sign_up_new_user(
-    db,
     name: str,
     email: str,
     password: Union[str, None] = None,
-    picture: Union[str, None] = None,
 ):
-    user = get_user_by_email(db, email)
+    user = app_db.get_user_by_email(email)
     if user:
         return user  # User already exists
 
-    new_user = create_user(
-        db,
-        schemas.UserCreate(
-            name=name,
-            email=email,
-            password=password,
-            role=schemas.Roles.USER,
-            picture=picture,
-        ),
-    )
+    new_user = create_user(name, email, password)
 
     return new_user

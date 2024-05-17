@@ -3,8 +3,10 @@ from fastapi.responses import FileResponse
 from loguru import logger
 
 # project imports
-from app.db.session import get_db
-from app.db.models import Credential
+from app.db import app_db
+
+# from app.db.session import get_db
+# from app.db.models import Credential
 from app.api.api_v1.routers.schemes import CreateCredentialData, UpdateCredentialData
 from app.core import security
 from app.core.auth import get_current_active_user
@@ -52,11 +54,9 @@ async def get_credential_icon(name: str):
 
 # get all credentials for a user
 @r.get("/credentials")
-async def get_all_user_credentials(
-    db=Depends(get_db), user=Depends(get_current_active_user)
-):
+async def get_all_user_credentials(user=Depends(get_current_active_user)):
     """Get all credentials for a user"""
-    credentials = db.query(Credential).filter(Credential.user_id == user.id).all()
+    credentials = app_db.get_user_credentials(user.id)
 
     return_data = []
     for credential in credentials:
@@ -79,7 +79,6 @@ async def get_all_user_credentials(
 @r.post("/credentials/new")
 async def new_user_credential(
     credeential_data: CreateCredentialData,
-    db=Depends(get_db),
     user=Depends(get_current_active_user),
 ):
     """Save a new credential for a user"""
@@ -90,15 +89,7 @@ async def new_user_credential(
         )
 
     # make sure user does not have credential with the same name
-    existing_credential = (
-        db.query(Credential)
-        .filter(
-            Credential.name == credeential_data.name,
-            Credential.credentialName == credeential_data.credentialName,
-            Credential.user_id == user.id,
-        )
-        .first()
-    )
+    existing_credential = app_db.get_credential_by_name(credeential_data.name, user.id)
 
     if existing_credential:
         raise HTTPException(
@@ -110,47 +101,36 @@ async def new_user_credential(
     encrypted_data = security.encrypt_json_data(credeential_data.credentialObj)
 
     # save the credential to the database
-    db_credential = Credential(
+    db_credential = app_db.create_credential(
         user_id=user.id,
         name=credeential_data.name,
-        credentialName=credeential_data.credentialName,
+        credential_name=credeential_data.credentialName,
         encrypted_data=encrypted_data,
     )
-    db.add(db_credential)
-    db.commit()
-    db.refresh(db_credential)
+
+    if not db_credential:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to save the credential",
+        )
 
     return {"id": db_credential.id, "credential": credeential_data.model_dump()}
 
 
 # delete a user's credential
 @r.delete("/credentials/{id}")
-async def delete_user_credential(
-    id: int, db=Depends(get_db), user=Depends(get_current_active_user)
-):
+async def delete_user_credential(id: str, _=Depends(get_current_active_user)):
     """Delete a user's credential"""
-    db_credential = (
-        db.query(Credential)
-        .filter(Credential.id == id, Credential.user_id == user.id)
-        .first()
-    )
-    db.delete(db_credential)
-    db.commit()
+    app_db.delete_credential(id)
 
     return {"message": "Credential deleted"}
 
 
 # get a user's credential by id
 @r.get("/credentials/{id}")
-async def get_user_credential(
-    id: int, db=Depends(get_db), user=Depends(get_current_active_user)
-):
+async def get_user_credential(id: str, _=Depends(get_current_active_user)):
     """Get a single credential for a user"""
-    credential = (
-        db.query(Credential)
-        .filter(Credential.id == id, Credential.user_id == user.id)
-        .first()
-    )
+    credential = app_db.get_credential(id)
 
     if not credential:
         raise HTTPException(
@@ -173,22 +153,19 @@ async def get_user_credential(
 # get a user credential by list of credentialNames
 @r.get("/credentials/names/{credentialNames}")
 async def get_user_credentials_by_names(
-    credentialNames: str, db=Depends(get_db), user=Depends(get_current_active_user)
+    credentialNames: str, user=Depends(get_current_active_user)
 ):
     """Get a list of credentials for a user"""
     credential_names = credentialNames.split("&")
-
-    credentials = (
-        db.query(Credential)
-        .filter(
-            Credential.credentialName.in_(credential_names),
-            Credential.user_id == user.id,
-        )
-        .all()
-    )
+    credentials = [
+        app_db.get_credential_by_name(name, user.id) for name in credential_names
+    ]
 
     return_data = []
     for credential in credentials:
+        if not credential:
+            continue
+
         # decrypt the data
         decrypted_data = security.decrypt_json_data(credential.encrypted_data)
 
@@ -207,10 +184,9 @@ async def get_user_credentials_by_names(
 # update a user's credential
 @r.put("/credentials/{id}")
 async def update_user_credential(
-    id: int,
+    id: str,
     update_data: UpdateCredentialData,
-    db=Depends(get_db),
-    user=Depends(get_current_active_user),
+    _=Depends(get_current_active_user),
 ):
     """Update a user's credential"""
 
@@ -222,17 +198,25 @@ async def update_user_credential(
     # encrypt the data
     encrypted_data = security.encrypt_json_data(update_data.credentialObj)
 
-    # update the credential
-    db_credential = (
-        db.query(Credential)
-        .filter(Credential.id == id, Credential.user_id == user.id)
-        .first()
-    )
-    db_credential.name = update_data.name
-    db_credential.credentialName = update_data.credentialName
-    db_credential.encrypted_data = encrypted_data
-    db.commit()
-    db.refresh(db_credential)
+    db_credential = app_db.get_credential(id)
+    if not db_credential:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Credential not found"
+        )
+
+    update_kwargs = {
+        "name": update_data.name,
+        "credentialName": update_data.credentialName,
+        "encrypted_data": encrypted_data,
+    }
+
+    db_credential = app_db.update_credential(db_credential.id, **update_kwargs)
+
+    if not db_credential:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update the credential",
+        )
 
     return_data = {
         "id": db_credential.id,

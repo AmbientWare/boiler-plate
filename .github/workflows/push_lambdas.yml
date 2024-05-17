@@ -1,0 +1,48 @@
+name: Push Lambdas
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/callmates' && 'production' || 'staging' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Determine Environment
+        id: determine-env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/callmates" ]]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get ECR URL from SSM Parameter Store
+        id: get_ecr_url
+        run: |
+          ECR_URL=$(aws ssm get-parameter --name "/${{ env.ENVIRONMENT }}/${{ vars.APP_NAME }}/ecr-url" --query "Parameter.Value" --output text)
+          echo "ECR_URL=${ECR_URL}" >> $GITHUB_ENV
+
+      - name: Build and push Docker image
+        id: build-image
+        run: |
+          docker build -f ./docker/lambda.Dockerfile -t ${{ env.ECR_URL }}:latest .
+          docker push ${{ env.ECR_URL }}:latest

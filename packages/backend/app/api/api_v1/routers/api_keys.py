@@ -3,7 +3,7 @@ from typing import List
 
 # project imports
 from app.db.session import get_db
-from app.db.models import Token
+from app.db.PostgresDb.models import Token
 from app.core import security
 from app.core.auth import get_current_active_user
 

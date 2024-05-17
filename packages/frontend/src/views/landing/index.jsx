@@ -29,12 +29,12 @@ const LandingPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // if on mobile device (for now relying on browser width to determine this, navigate to mobile landing page)
-    if (window.innerWidth < 800) {
-      navigate("/mobile");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   // if on mobile device (for now relying on browser width to determine this, navigate to mobile landing page)
+  //   if (window.innerWidth < 800) {
+  //     navigate("/mobile");
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
     setLoginDialogProps({
